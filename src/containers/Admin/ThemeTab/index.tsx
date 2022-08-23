@@ -155,7 +155,7 @@ const ThemeTab = (): JSX.Element => {
     return (
         <div className="theme-tab">
             <Heading2 className="heading">Tilpass utseende</Heading2>
-            <Paragraph className="theme-tab__paragraph">
+            <Paragraph className="theme-tab__paragraph" style={{maxWidth: "40rem"}}>
                 Her kan du endre utseendet på tavlen din. Vær oppmerksom på at
                 tekststørrelse og rotasjon kun vil vises på selve tavla, og ikke
                 på siden hvor du endrer på instillingene. Fargene vil
@@ -199,7 +199,7 @@ const ThemeTab = (): JSX.Element => {
             {/* <div className='theme-tab__grid'> */}
             <div>
                 <Heading3 className="heading">Velg tekststørrelse</Heading3>
-                <Paragraph className="theme-tab__paragraph">
+                <Paragraph className="theme-tab__paragraph" style = {{maxWidth: "40rem"}}>
                     Her kan du velge hvor stor teksten på tavla skal være.
                     Teksten vil kun gjelde for den samme nettleseren du endrer
                     innstillingen på.
@@ -240,7 +240,7 @@ const ThemeTab = (): JSX.Element => {
             </div>
             <div>
                 <Heading3 className="heading">Velg rotasjon</Heading3>
-                <Paragraph className="theme-tab__paragraph">
+                <Paragraph className="theme-tab__paragraph" style = {{maxWidth: "40rem"}}>
                     Her kan du velge hvilken retning innholdet på tavla skal
                     vises.
                 </Paragraph>
