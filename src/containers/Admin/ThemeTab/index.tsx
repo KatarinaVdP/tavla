@@ -51,7 +51,7 @@ const ThemeTab = (): JSX.Element => {
     const [stopPlaceExample, setStopPlaceExample] =
         useState<StopPlaceWithDepartures>()
 
-    const directionPreviewImages = DirectionPreview(settings?.theme, direction) 
+    const directionPreviewImages = DirectionPreview(settings?.theme, direction)
 
     useEffect(() => {
         const previewStopPlace =
@@ -136,9 +136,8 @@ const ThemeTab = (): JSX.Element => {
         saveToLocalStorage(boardId + '-fontScale', newFontScale)
     }
 
-    function onChangeDirection(direction: Direction){
-        saveToLocalStorage(boardId + "-direction", direction)
-        
+    function onChangeDirection(direction: Direction) {
+        saveToLocalStorage(boardId + '-direction', direction)
     }
 
     return (
@@ -239,7 +238,9 @@ const ThemeTab = (): JSX.Element => {
                         Mindre
                         <SubtractIcon />
                     </FloatingButton>
-                    <span style={{ width: "5rem", textAlign: "center" }}>{fontScale * 100}%</span>
+                    <span style={{ width: '5rem', textAlign: 'center' }}>
+                        {fontScale * 100}%
+                    </span>
                     <FloatingButton
                         onClick={() =>
                             onChangeFontSize(eFontChangeAction.increase)
@@ -251,7 +252,7 @@ const ThemeTab = (): JSX.Element => {
                         <AddIcon />
                     </FloatingButton>
                 </div>
-                <FontSizePreview/>
+                <FontSizePreview boardId={boardId} />
             </div>
         </div>
     )

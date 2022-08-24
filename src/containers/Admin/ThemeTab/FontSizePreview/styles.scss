@@ -39,13 +39,13 @@
     &__header-icons {
         display: flex;
         align-items: center;
-        font-size: 2rem;
+        font-size: 2em;
     }
 
     &__walking-time {
         font-style: normal;
         font-weight: normal;
-        font-size: 1rem;
+        font-size: 1em;
         color: var(--tavla-font-color);
     }
 }
@@ -71,7 +71,7 @@
     &__icon {
         min-width: 2rem;
         margin-right: 1rem;
-        font-size: $font-sizes-extra-large4;
+        font-size: 2em;
     }
 
     &__texts {
@@ -85,7 +85,7 @@
     &__walking-time {
         font-style: normal;
         font-weight: normal;
-        font-size: 1rem;
+        font-size: 1em;
         margin: 0.5rem 0;
         color: var(--tavla-label-font-color);
         overflow: hidden;
@@ -98,7 +98,7 @@
         grid-template-columns: repeat(20, 1fr);
         justify-content: space-between;
         min-width: 130rem;
-        font-size: $font-sizes-extra-large;
+        font-size: 2em;
     }
 }
 
