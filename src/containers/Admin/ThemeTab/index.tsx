@@ -32,6 +32,7 @@ import { useRouteMatch } from 'react-router'
 import { useStopPlacesWithDepartures } from '../../../logic'
 import { Line, TransportMode } from '@entur/sdk/lib/journeyPlanner/types'
 import { DirectionPreview } from '../../../assets/icons/DirectionPreview'
+import FontSizePreview from './FontSizePreview'
 
 const ThemeTab = (): JSX.Element => {
     const [radioValue, setRadioValue] = useState<Theme | null>(null)
@@ -250,6 +251,7 @@ const ThemeTab = (): JSX.Element => {
                         <AddIcon />
                     </FloatingButton>
                 </div>
+                <FontSizePreview/>
             </div>
         </div>
     )

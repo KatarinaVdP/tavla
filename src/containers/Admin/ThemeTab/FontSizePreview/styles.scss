@@ -1,0 +1,104 @@
+@import '../../../../assets/styles/import.scss';
+@import '../../../../variables.scss';
+
+.tile {
+    height: 100%;
+    width: 65%;
+    background-color: var(--tavla-box-background-color);
+    flex: none;
+    padding: 1rem;
+    overflow: scroll;
+    border-radius: 1rem;
+    margin-top: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+
+    &--pressed {
+        box-shadow: inset 0 0 65px -20px rgba(0, 0, 0, 0.54);
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        h2 {
+            margin: 0;
+            color: var(--tavla-font-color);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        svg {
+            margin-left: 0.5rem;
+        }
+    }
+
+    &__header-icons {
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+    }
+
+    &__walking-time {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1rem;
+        color: var(--tavla-font-color);
+    }
+}
+
+.tilerow {
+    display: flex;
+    border-bottom: 2px solid var(--tavla-border-color);
+    padding: 1rem 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    &__label {
+        margin: 0;
+        margin-bottom: 0.5rem;
+        color: var(--tavla-font-color);
+    }
+
+    &__icon {
+        min-width: 2rem;
+        margin-right: 1rem;
+        font-size: $font-sizes-extra-large4;
+    }
+
+    &__texts {
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    &__walking-time {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        color: var(--tavla-label-font-color);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    &__sublabels {
+        display: grid;
+        grid-template-columns: repeat(20, 1fr);
+        justify-content: space-between;
+        min-width: 130rem;
+        font-size: $font-sizes-extra-large;
+    }
+}
+
