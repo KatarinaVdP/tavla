@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Switch, BrowserRouter, useLocation } from 'react-router-dom'
+import { Route, Switch, BrowserRouter, useLocation, useRouteMatch } from 'react-router-dom'
 
 import { ApolloProvider } from '@apollo/client'
 
@@ -37,6 +37,9 @@ import ThemeProvider from './ThemeWrapper/ThemeProvider'
 import MyBoards from './MyBoards'
 
 import './styles.scss'
+import { PrimaryButton } from '@entur/button'
+import { fontSizes } from '@entur/tokens'
+import { Direction } from '../types'
 
 const numberOfVisits = getFromLocalStorage<number>('numberOfVisits') || 1
 
@@ -185,7 +188,11 @@ const Content = (): JSX.Element => {
     const settings = useSettings()
     const location = useLocation()
 
+
     const isOnTavle = !['/privacy', '/tavler'].includes(location.pathname)
+
+    const boardId = useRouteMatch<{ documentId: string }>('/t/:documentId')?.params?.documentId
+    
 
     const Dashboard = settings[0]
         ? getDashboardComponent(settings[0].dashboard)
@@ -193,7 +200,26 @@ const Content = (): JSX.Element => {
 
     useEffect(() => {
         updateManifest(window.location.href, window.location.origin)
+
+        if(window.location.href.includes("/t/")){
+            const fontSizeScale = (getFromLocalStorage(boardId + "-fontScale") as number || 1) * 16
+            const direction = getFromLocalStorage(boardId + "-direction") as Direction
+            document.documentElement.style.fontSize = fontSizeScale + "px"
+            if(direction === Direction.ROTERT){
+                document.documentElement.style.transform = "rotate(-90deg)"
+            }else {
+                document.documentElement.style.transform = "rotate(0deg)"
+            }
+
+
+        }else{
+            document.documentElement.style.fontSize = "16px"
+            document.documentElement.style.transform = "rotate(0deg)"
+
+        }
     }, [location.pathname])
+
+
 
     return (
         <ApolloProvider client={realtimeVehiclesClient}>

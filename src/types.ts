@@ -61,6 +61,12 @@ export enum Theme {
     GREY = 'grey',
 }
 
+export enum Direction {
+    STANDARD = 'standard',
+    ROTERT = 'rotert',
+}
+
+
 export enum IconColorType {
     DEFAULT = 'default',
     CONTRAST = 'contrast',
