@@ -77,7 +77,7 @@ const ThemeTab = (): JSX.Element => {
     )
 
     const [value, setValue] = useState(
-        getFromLocalStorage(boardId + '-fontScale') || "Liten",
+        getFromLocalStorage(boardId + '-fontScale') || "1.5",
     )
 
     //const baseFontSize = 16
@@ -134,11 +134,11 @@ const ThemeTab = (): JSX.Element => {
                 break
 
             case "2":
-                setFontScale(2.5)
+                setFontScale(2)
                 break
             
-            case "3":
-                setFontScale(3.5)
+            case "2.5":
+                setFontScale(2.5)
                 break
 
             default:
