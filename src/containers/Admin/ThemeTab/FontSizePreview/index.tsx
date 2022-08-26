@@ -7,6 +7,34 @@ import { getFromLocalStorage } from "../../../../settings/LocalStorage"
 import { IconColorType } from "../../../../types"
 import "./styles.scss"
 
+// const BREAKPOINTS = {
+//     lg: 1200,
+//     md: 996,
+//     sm: 768,
+//     xs: 480,
+//     xxs: 0,
+// }
+
+// const COLS: { [key: string]: number } = {
+//     lg: 3,
+//     md: 2,
+//     sm: 2,
+//     xs: 1,
+//     xxs: 1,
+// }
+
+// function getDefaultBreakpoint() {
+//     if (window.innerWidth > BREAKPOINTS.lg) {
+//         return 'lg'
+//     } else if (window.innerWidth > BREAKPOINTS.md) {
+//         return 'md'
+//     }
+//     return 'sm'
+// }
+
+// const [breakpoint, setBreakpoint] = useState<string>(getDefaultBreakpoint())
+// const maxWidthCols = COLS[breakpoint] || 1
+
 const FontSizePreview = () => {
     const boardId = useRouteMatch<{ documentId: string }>('/admin/:documentId')?.params?.documentId
     const [baseFontSize, setBaseFontSize] = useState(16)
@@ -21,7 +49,7 @@ const FontSizePreview = () => {
 
     return (
         <div>
-        <Paragraph style={{marginTop:"2rem"}}>Forhåndsvisning av tekstørrelsen:</Paragraph>
+        <Paragraph className="introductoryText">Forhåndsvisning av tekstørrelsen:</Paragraph>
             <div className="tilePreview" style={{fontSize: baseFontSize}}>
                 <div className="tilePreview__tileRow">
                     <div className="tilePreview__icon">

@@ -2,10 +2,27 @@
 @import '../../../../variables.scss';
 
 .tilePreview {
+
+    @media (max-width: 480px) {
+        width: 100%;
+    }
+    @media (min-width: 480px) and (max-width: 768px) {
+        width: 100%;
+    }
+    @media (min-width: 768px) and (max-width: 996px) {
+        width: 50%;
+    }
+    @media (min-width: 996px) and (max-width: 1200px) {
+        width: 50%;
+    }
+    @media (min-width: 1200px) {
+        width: 33%;
+    }
+
     border-radius: 1rem;
 
     // height: 100%;
-    width: 50%;
+    // width: 50%;
     background-color: var(--tavla-box-background-color);
     flex: none;
     padding: 2rem;
@@ -73,11 +90,11 @@
         &:first-child {
             padding-left: 0;
         }
-
-        // svg {
-        //     margin-left: -0.125rem;
-        //     margin-right: -0.125rem;
-        // }
     }
+}
+
+.introductoryText {
+    margin-top: 2rem;
+    color: var(--tavla-label-font-color);
 }
 
