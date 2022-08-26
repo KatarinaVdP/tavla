@@ -33,7 +33,13 @@ const ThemeTab = (): JSX.Element => {
     const boardId = useRouteMatch<{ documentId: string }>('/admin/:documentId')
         ?.params?.documentId
 
-    const direction = getFromLocalStorage(boardId + '-direction') as Direction
+    const [direction, setDirection] = useState(
+        getFromLocalStorage(boardId + '-direction') as Direction,
+    )
+
+    const [fontScale, setFontScale] = useState(
+        getFromLocalStorage(boardId + '-fontScale') || 1,
+    )
 
     const [rotationRadioValue, setRotationRadioValue] = useState<Direction>(
         direction || Direction.STANDARD,
@@ -41,13 +47,15 @@ const ThemeTab = (): JSX.Element => {
 
     const directionPreviewImages = DirectionPreview(settings?.theme)
 
-    const [fontScale, setFontScale] = useState(
-        getFromLocalStorage(boardId + '-fontScale') || 1,
-    )
-
     useEffect(() => {
         if (settings?.theme && !radioValue) {
             setRadioValue(settings.theme)
+        }
+        if (settings?.fontScale) {
+            setFontScale(settings.fontScale)
+        }
+        if (settings?.direction) {
+            setDirection(settings.direction)
         }
     }, [settings, radioValue])
 
@@ -100,6 +108,10 @@ const ThemeTab = (): JSX.Element => {
         }
 
         setFontScale(newFontScale)
+        //TODO: er det redundant med local storage i tillegg?
+        setSettings({
+            fontScale: newFontScale,
+        })
         saveToLocalStorage(boardId + '-fontScale', newFontScale)
     }
 
