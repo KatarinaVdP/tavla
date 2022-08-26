@@ -1,0 +1,47 @@
+@import '../../../../assets/styles/import.scss';
+@import '../../../../variables.scss';
+
+.distance-editor {
+    display: flex;
+    justify-content: start;
+    padding: 2rem 0 0 0;
+
+    * {
+        padding: 0;
+        margin: 0;
+        font-size: 2rem;
+    }
+
+    &__textfield-wrapper {
+        width: 10rem;
+        font-weight: 400;
+    }
+
+    &__textfield-wrapper::after {
+        content: '';
+        display: block;
+        margin: 0 auto;
+        width: 7.5rem;
+        border-bottom: 5px dotted var(--tavla-input-dotted-border-color);
+    }
+
+    & &__text-field {
+        padding: 0 1rem 0 0;
+        color: var(--tavla-font-color);
+        background-color: transparent;
+        border-color: transparent;
+
+        * {
+            font-size: inherit;
+        }
+
+        input {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}
