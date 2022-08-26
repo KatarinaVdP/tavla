@@ -252,7 +252,7 @@ const ThemeTab = (): JSX.Element => {
                         <AddIcon />
                     </FloatingButton>
                 </div>
-                <FontSizePreview boardId={boardId} />
+                <FontSizePreview/>
             </div>
         </div>
     )
