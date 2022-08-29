@@ -110,7 +110,6 @@ const ThemeTab = (): JSX.Element => {
     return (
         <div className="theme-tab">
             <Heading2 className="heading">Tilpass utseende</Heading2>
-            {/* <Paragraph className="theme-tab__paragraph" style={{maxWidth: "40rem"}}> TODO: Check if this is needed*/}
             <Paragraph className="theme-tab__paragraph">
                 Her kan du endre utseendet på tavlen din. Vær oppmerksom på at
                 tekststørrelse og rotasjon kun vil vises på selve tavla, og ikke
@@ -154,7 +153,6 @@ const ThemeTab = (): JSX.Element => {
             </div>
             <div>
                 <Heading3 className="heading">Velg rotasjon</Heading3>
-                {/* <Paragraph className="theme-tab__paragraph" style = {{maxWidth: "40rem"}}> TODO: Check if this is needed */}
                 <Paragraph className="theme-tab__paragraph">
                     Her kan du velge hvilken retning innholdet på tavla skal
                     vises.
