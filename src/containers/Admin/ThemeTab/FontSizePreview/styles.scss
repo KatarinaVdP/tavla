@@ -20,9 +20,6 @@
     }
 
     border-radius: 1rem;
-
-    // height: 100%;
-    // width: 50%;
     background-color: var(--tavla-box-background-color);
     flex: none;
     padding: 2rem;
@@ -37,46 +34,30 @@
     }
 
     &__label {
-        // margin: 0;
         margin-bottom: 0.5em;
-        // color: var(--tavla-font-color);
         font-size: 1.5em;
     }
 
     &__icon {
-        // min-width: 2rem;
         margin-right: 1rem;
-        // font-size: $font-sizes-extra-large4;
         font-size: 2em;
-
-        // min-width: 2em;
-        // margin-right: 1rem;
-        // font-size: $font-sizes-extra-large4;
     }
 
     &__texts {
         flex-direction: column;
-        // flex-grow: 1;
         overflow-x: scroll;
-        // overflow-y: hidden;
         white-space: nowrap;
-        // text-overflow: ellipsis;
     }
 
     &__platform-info {
-        // font-style: normal;
-        // font-weight: normal;
         color: var(--tavla-label-font-color);
         margin-bottom: 0.5em;
-        // font-size: 1em;
     }
 
     &__sublabels {
         display: flex;
-        // flex-wrap: nowrap;
         overflow-x: scroll;
         overflow-y: hidden;
-        // font-size: $font-sizes-extra-large;
         font-size: 1.25em;
     }
 
