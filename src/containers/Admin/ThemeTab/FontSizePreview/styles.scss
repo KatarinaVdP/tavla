@@ -2,7 +2,6 @@
 @import '../../../../variables.scss';
 
 .tilePreview {
-
     @media (max-width: 480px) {
         width: 100%;
     }
@@ -78,4 +77,3 @@
     margin-top: 2rem;
     color: var(--tavla-label-font-color);
 }
-

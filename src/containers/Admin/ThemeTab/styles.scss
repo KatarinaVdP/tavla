@@ -6,6 +6,7 @@
 
     &__paragraph {
         color: var(--tavla-font-color);
+        max-width: 40rem;
     }
 
     &__eds-paragraph {
@@ -21,14 +22,25 @@
         grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
     }
 
-    &__grid-itme {
-        display: flex;
-        flex-direction: column;
-        width: fit-content
-    }
-
     &__theme-card {
         max-width: 35rem;
+    }
+
+    &__font-size-buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    &__font-size-button {
+        width: 11rem;
+        min-width: 8rem;
+    }
+
+    &__font-size-percentage {
+        width: 5rem;
+        text-align: center;
     }
 }
 
@@ -45,7 +57,7 @@
     color: var(--tavla-font-color);
 }
 
-.font-scale-button-text{
+.font-scale-button-text {
     margin: 2rem;
 }
 
@@ -60,7 +72,7 @@
             margin: 0 0 1rem 0;
         }
     }
-    .font-scale-button-text{
+    .font-scale-button-text {
         margin: 1rem;
     }
 }

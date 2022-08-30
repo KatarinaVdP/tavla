@@ -66,6 +66,10 @@ export enum Direction {
     ROTERT = 'rotert',
 }
 
+export enum FontChangeAction {
+    increase = 1,
+    decrease,
+}
 
 export enum IconColorType {
     DEFAULT = 'default',
