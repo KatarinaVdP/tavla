@@ -16,8 +16,6 @@ import Light from '../../../assets/previews/Light-theme.svg'
 import Entur from '../../../assets/previews/Entur-theme.svg'
 import { getDocumentId } from '../../../utils'
 
-import '../../../dashboards/Chrono/styles.scss'
-
 import { DirectionPreview } from '../../../assets/icons/DirectionPreview'
 
 import './styles.scss'
