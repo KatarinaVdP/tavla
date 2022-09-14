@@ -33,17 +33,15 @@ import {
 
 import { DEFAULT_DISTANCE, DEFAULT_ZOOM } from '../../../constants'
 import { Line, StopPlaceWithLines } from '../../../types'
-import {
-    useNearestPlaces,
-    useMobility,
-    useBikeRentalStations,
-} from '../../../logic'
+import { useNearestPlaces, useMobility } from '../../../logic'
 import { getStopPlacesWithLines } from '../../../logic/getStopPlacesWithLines'
 import {
     saveToLocalStorage,
     getFromLocalStorage,
 } from '../../../settings/LocalStorage'
 import { useStopPlacesWithLines } from '../../../logic/useStopPlacesWithLines'
+
+import { useQuery, gql } from '@apollo/client'
 
 import useRealtimeVehicleData from '../../../logic/useRealtimeVehicleData'
 
@@ -59,6 +57,7 @@ import WeatherPanel from './WeatherPanel'
 
 import './styles.scss'
 import CustomTilePanel from './CustomTilePanel'
+import { apolloClient, apolloMobilityClient } from '../../../service'
 
 const isMobile = isMobileWeb()
 
@@ -184,11 +183,40 @@ const EditTab = (): JSX.Element => {
         setSettings,
     ])
 
+    const GET_STOPPLACES = gql`
+        query getStopPlaces {
+            stations(lat: 59.911491, lon: 10.757933, range: 500, count: 25) {
+                lat
+                lon
+                id
+                name {
+                    translation {
+                        value
+                        language
+                    }
+                }
+                system {
+                    name {
+                        translation {
+                            language
+                            value
+                        }
+                    }
+                }
+            }
+        }
+    `
+
+    const { data, loading, error } = useQuery(GET_STOPPLACES, {
+        context: { endPoint: 'mobility' },
+    })
+
     const [stopPlaces, setStopPlaces] = useState<
         StopPlaceWithLines[] | undefined
     >(undefined)
-    const bikeRentalStations: Station[] | undefined =
-        useBikeRentalStations(false)
+
+    const bikeRentalStations: Station[] | undefined = data?.stations
+
     const [sortedBikeRentalStations, setSortedBikeRentalStations] = useState<
         Station[]
     >([])

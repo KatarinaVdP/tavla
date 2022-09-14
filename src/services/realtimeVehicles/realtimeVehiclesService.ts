@@ -1,6 +1,7 @@
-import { split, HttpLink, ApolloClient, InMemoryCache } from '@apollo/client'
+import { split, HttpLink, ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
+import { apolloClient, apolloMobilityClient } from '../../service'
 
 const httpLink = new HttpLink({
     uri:
@@ -29,8 +30,34 @@ const splitLink = split(
     httpLink,
 )
 
+/* const client = new ApolloClient({
+    link: ApolloLink.split(
+      operation => operation.getContext().clientName === "third-party",
+      // the string "third-party" can be anything you want,
+      // we will use it in a bit
+      thirdPartyLink, // <= apollo will send to this if clientName is "third-party"
+      myLink // <= otherwise will send to this
+    )
+    // other options
+  });
+ */
+
+  const mobilityLink = new HttpLink({
+    uri: 'https://api.staging.entur.io/mobility/v2/graphql',
+    // other link options...
+  });
+  
+  const vehiclesLink = new HttpLink({
+    uri: 'https://api.staging.entur.io/realtime/v1/vehicles/graphql',
+    // other link options...
+  });
+  
 export const realtimeVehiclesClient = new ApolloClient({
-    link: splitLink,
+    link: ApolloLink.split(
+        operation => operation.getContext().endPoint === "mobility",
+        mobilityLink,
+        vehiclesLink
+    ),
     cache: new InMemoryCache({
         addTypename: false,
     }),

@@ -27,3 +27,11 @@ export const apolloClient = new ApolloClient({
         'ET-Client-Name': CLIENT_NAME,
     },
 })
+
+export const apolloMobilityClient = new ApolloClient({
+    uri: `${process.env.MOBILITY_HOST}/graphql`,
+    cache: new InMemoryCache(),
+    headers: {
+        'ET-Client-Name': CLIENT_NAME,
+    },
+})
