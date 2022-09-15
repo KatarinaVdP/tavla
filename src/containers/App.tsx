@@ -195,8 +195,8 @@ const Content = (): JSX.Element => {
 
     const isOnTavle = !['/privacy', '/tavler'].includes(location.pathname)
 
-    const boardId = useRouteMatch<{ documentId: string }>('/t/:documentId')
-        ?.params?.documentId
+    const boardMatch = useRouteMatch<{ documentId: string }>('/t/:documentId')
+    const boardId = boardMatch?.params.documentId
 
     const Dashboard = settings[0]
         ? getDashboardComponent(settings[0].dashboard)
@@ -206,11 +206,11 @@ const Content = (): JSX.Element => {
 
     useEffect(() => {
         updateManifest(window.location.href, window.location.origin)
-        if (window.location.href.includes('/t/')) {
+        if (boardMatch) {
             const direction = settings[0]?.direction || Direction.STANDARD
             const fontSizeScale = settings[0]?.fontScale || 1
             document.documentElement.style.fontSize = fontSizeScale * 16 + 'px'
-            setIsRotated(direction === Direction.ROTERT)
+            setIsRotated(direction === Direction.ROTATED)
         } else {
             document.documentElement.style.fontSize = '16px'
             setIsRotated(false)
