@@ -63,7 +63,7 @@ export enum Theme {
 
 export enum Direction {
     STANDARD = 'standard',
-    ROTATED = 'rotert',
+    ROTATED = 'rotated',
 }
 
 export enum FontChangeAction {
