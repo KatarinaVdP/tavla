@@ -57,7 +57,6 @@ import WeatherPanel from './WeatherPanel'
 
 import './styles.scss'
 import CustomTilePanel from './CustomTilePanel'
-import { apolloClient, apolloMobilityClient } from '../../../service'
 
 const isMobile = isMobileWeb()
 
@@ -183,6 +182,7 @@ const EditTab = (): JSX.Element => {
         setSettings,
     ])
 
+    //burde denne flyttes ut...(?)
     const GET_STOPPLACES = gql`
         query getStopPlaces {
             stations(lat: 59.911491, lon: 10.757933, range: 500, count: 25) {

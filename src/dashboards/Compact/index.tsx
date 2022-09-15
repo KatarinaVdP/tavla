@@ -7,12 +7,11 @@ import { useLongPress } from 'use-long-press'
 
 import { Loader } from '@entur/loader'
 
-import { FormFactor } from '@entur/sdk/lib/mobility/types'
+import { FormFactor, Station } from '@entur/sdk/lib/mobility/types'
 
 import RearrangeModal, { Item } from '../../components/RearrangeModal'
 
 import {
-    useBikeRentalStations,
     useStopPlacesWithDepartures,
     useMobility,
     useWalkInfo,
@@ -44,10 +43,11 @@ import QRTile from '../../components/QRTile'
 import ImageTile from '../../components/ImageTile'
 
 import DepartureTile from './DepartureTile'
-import BikeTile from './BikeTile'
 import MapTile from './MapTile'
 
 import './styles.scss'
+import MobilityTile from './MobilityTile'
+import { getStopPlaces } from '../../logic/getStopPlaces'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -119,7 +119,14 @@ const EnturDashboard = (): JSX.Element | null => {
         boardId ? getFromLocalStorage(boardId + '-tile-order') : undefined,
     )
 
-    const bikeRentalStations = useBikeRentalStations()
+    const bicycleStopPlaces = getStopPlaces(FormFactor.BICYCLE)
+    const carStopPlaces = getStopPlaces(FormFactor.CAR)
+
+    const bikeRentalStations: Station[] | undefined =
+        bicycleStopPlaces.data?.stations
+    const carRentalStations: Station[] | undefined =
+        carStopPlaces.data?.stations
+
     const scooters = useMobility(FormFactor.SCOOTER)
 
     const stopPlacesWithDepartures = useStopPlacesWithDepartures()
@@ -136,6 +143,8 @@ const EnturDashboard = (): JSX.Element | null => {
     const numberOfStopPlaces = stopPlacesWithDepartures
         ? stopPlacesWithDepartures.length
         : 0
+
+    //TODO: remove this check because it might be redundant - if the data list is empty it will resolve to false anyways
     const anyBikeRentalStations: number | undefined =
         bikeRentalStations && bikeRentalStations.length
 
@@ -203,10 +212,16 @@ const EnturDashboard = (): JSX.Element | null => {
                 name: item.name,
             }))
         }
-        if (anyBikeRentalStations) {
+        if (bikeRentalStations && bikeRentalStations.length > 0) {
             defaultTileOrder = [
                 ...defaultTileOrder,
                 { id: 'city-bike', name: 'Bysykkel' },
+            ]
+        }
+        if (carRentalStations && carRentalStations.length > 0) {
+            defaultTileOrder = [
+                ...defaultTileOrder,
+                { id: 'rental-car', name: 'Leiebil' },
             ]
         }
         if (hasData && mapCol) {
@@ -296,7 +311,6 @@ const EnturDashboard = (): JSX.Element | null => {
             clearTimeout(isCancelled.current)
         }
     }
-
     if (window.innerWidth < BREAKPOINTS.md) {
         if (!tileOrder) return null
 
@@ -352,11 +366,22 @@ const EnturDashboard = (): JSX.Element | null => {
                                         []
                                     )
                                 } else if (item.id == 'city-bike') {
-                                    return bikeRentalStations &&
-                                        anyBikeRentalStations ? (
+                                    return bikeRentalStations ? (
                                         <div key={item.id}>
-                                            <BikeTile
-                                                stations={bikeRentalStations}
+                                            <MobilityTile
+                                                mobilityType={
+                                                    FormFactor.BICYCLE
+                                                }
+                                            />
+                                        </div>
+                                    ) : (
+                                        []
+                                    )
+                                } else if (item.id == 'rental-car') {
+                                    return carRentalStations ? (
+                                        <div key={item.id}>
+                                            <MobilityTile
+                                                mobilityType={FormFactor.CAR}
                                             />
                                         </div>
                                     ) : (
@@ -428,6 +453,15 @@ const EnturDashboard = (): JSX.Element | null => {
             </DashboardWrapper>
         )
     }
+
+    // TODO: this should be refactored
+    if (bicycleStopPlaces.loading || carStopPlaces.loading)
+        return <div>'Loading...'</div>
+    if (bicycleStopPlaces.error)
+        return <div>`Error! ${bicycleStopPlaces.error.message}`</div>
+    if (carStopPlaces.error)
+        return <div>`Error! ${carStopPlaces.error.message}`</div>
+
     return (
         <DashboardWrapper
             className="compact"
@@ -501,7 +535,7 @@ const EnturDashboard = (): JSX.Element | null => {
                                 />
                             </div>
                         ))}
-                        {bikeRentalStations && anyBikeRentalStations ? (
+                        {bikeRentalStations && bikeRentalStations.length > 0 ? (
                             <div
                                 key="city-bike"
                                 data-grid={getDataGrid(
@@ -516,7 +550,29 @@ const EnturDashboard = (): JSX.Element | null => {
                                         variant="light"
                                     />
                                 ) : null}
-                                <BikeTile stations={bikeRentalStations} />
+                                <MobilityTile
+                                    mobilityType={FormFactor.BICYCLE}
+                                />
+                            </div>
+                        ) : (
+                            []
+                        )}
+                        {carRentalStations && carRentalStations.length > 0 ? (
+                            <div
+                                key="rental-car"
+                                data-grid={getDataGrid(
+                                    numberOfStopPlaces + weatherCol,
+                                    maxWidthCols,
+                                )}
+                            >
+                                {!isMobile ? (
+                                    <ResizeHandle
+                                        size="32"
+                                        className="resizeHandle"
+                                        variant="light"
+                                    />
+                                ) : null}
+                                <MobilityTile mobilityType={FormFactor.CAR} />
                             </div>
                         ) : (
                             []
