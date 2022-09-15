@@ -196,7 +196,6 @@ const Content = (): JSX.Element => {
     const isOnTavle = !['/privacy', '/tavler'].includes(location.pathname)
 
     const boardMatch = useRouteMatch<{ documentId: string }>('/t/:documentId')
-    const boardId = boardMatch?.params.documentId
 
     const Dashboard = settings[0]
         ? getDashboardComponent(settings[0].dashboard)
@@ -215,7 +214,7 @@ const Content = (): JSX.Element => {
             document.documentElement.style.fontSize = '16px'
             setIsRotated(false)
         }
-    }, [location.pathname, boardId, settings])
+    }, [location.pathname, boardMatch, settings])
 
     return (
         <ApolloProvider client={realtimeVehiclesClient}>
