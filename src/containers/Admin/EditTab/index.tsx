@@ -41,8 +41,6 @@ import {
 } from '../../../settings/LocalStorage'
 import { useStopPlacesWithLines } from '../../../logic/useStopPlacesWithLines'
 
-import { useQuery, gql } from '@apollo/client'
-
 import useRealtimeVehicleData from '../../../logic/useRealtimeVehicleData'
 
 import StopPlacePanel from './StopPlacePanel'
@@ -57,6 +55,7 @@ import WeatherPanel from './WeatherPanel'
 
 import './styles.scss'
 import CustomTilePanel from './CustomTilePanel'
+import { getStopPlaces } from '../../../logic/getStopPlaces'
 
 const isMobile = isMobileWeb()
 
@@ -182,40 +181,14 @@ const EditTab = (): JSX.Element => {
         setSettings,
     ])
 
-    //burde denne flyttes ut...(?)
-    const GET_STOPPLACES = gql`
-        query getStopPlaces {
-            stations(lat: 59.911491, lon: 10.757933, range: 500, count: 25) {
-                lat
-                lon
-                id
-                name {
-                    translation {
-                        value
-                        language
-                    }
-                }
-                system {
-                    name {
-                        translation {
-                            language
-                            value
-                        }
-                    }
-                }
-            }
-        }
-    `
-
-    const { data, loading, error } = useQuery(GET_STOPPLACES, {
-        context: { endPoint: 'mobility' },
-    })
+    const bikeRentalStations =
+        getStopPlaces(FormFactor.BICYCLE).data?.stations || []
 
     const [stopPlaces, setStopPlaces] = useState<
         StopPlaceWithLines[] | undefined
     >(undefined)
 
-    const bikeRentalStations: Station[] | undefined = data?.stations
+    //const bikeRentalStations: Station[] | undefined = data?.stations
 
     const [sortedBikeRentalStations, setSortedBikeRentalStations] = useState<
         Station[]

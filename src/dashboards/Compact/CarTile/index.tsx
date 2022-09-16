@@ -25,7 +25,7 @@ const CarTile = ({ stations }: Props): JSX.Element => {
 
     return (
         <Tile
-            title="Leiebil"
+            title="Bildeling"
             icons={[
                 <CarIcon
                     key="car-icon"
@@ -47,8 +47,8 @@ const CarTile = ({ stations }: Props): JSX.Element => {
                             time:
                                 `${station.numBikesAvailable}` +
                                 (station.numBikesAvailable === 1
-                                    ? ` leiebil`
-                                    : ` leiebiler`),
+                                    ? ` biler`
+                                    : ` biler`),
                             departureTime: new Date(),
                         },
                         {
