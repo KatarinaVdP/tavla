@@ -37,18 +37,6 @@ const splitLink = split(
     httpLink,
 )
 
-/* const client = new ApolloClient({
-    link: ApolloLink.split(
-      operation => operation.getContext().clientName === "third-party",
-      // the string "third-party" can be anything you want,
-      // we will use it in a bit
-      thirdPartyLink, // <= apollo will send to this if clientName is "third-party"
-      myLink // <= otherwise will send to this
-    )
-    // other options
-  });
- */
-
   const mobilityLink = new HttpLink({
     uri: 'https://api.staging.entur.io/mobility/v2/graphql',
     headers: {
