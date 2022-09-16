@@ -1,3 +1,5 @@
+import { SmallAlertBox } from '@entur/alert'
+import { Loader } from '@entur/loader'
 import { FormFactor } from '@entur/sdk/lib/mobility/types'
 import React from 'react'
 import { useStopPlaceData } from '../../../logic/useStopPlaceData'
@@ -7,8 +9,15 @@ import CarTile from '../CarTile'
 const MobilityTile = ({ mobilityType }: Props): JSX.Element => {
     const { data, loading, error } = useStopPlaceData(mobilityType)
 
-    if (loading) return <div>'Loading...'</div>
-    if (error) return <div>`Error! ${error.message}`</div>
+    if (loading) return <Loader> Henter data ...</Loader>
+    if (error)
+        return (
+            <div>
+                <SmallAlertBox width="fluid" variant="error">
+                    Error! ${error.message}
+                </SmallAlertBox>
+            </div>
+        )
 
     return (
         <>
