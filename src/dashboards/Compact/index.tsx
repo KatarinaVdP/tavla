@@ -142,11 +142,7 @@ const EnturDashboard = (): JSX.Element | null => {
         ? stopPlacesWithDepartures.length
         : 0
 
-    //TODO: remove this check because it might be redundant - if the data list is empty it will resolve to false anyways
-    const anyBikeRentalStations: number | undefined =
-        bikeRentalStations && bikeRentalStations.length
-
-    const bikeCol = anyBikeRentalStations ? 1 : 0
+    const bikeCol = bikeRentalStations.length > 0 ? 1 : 0
     const mapCol = settings?.showMap ? 1 : 0
     const weatherCol = settings?.showWeather ? 1 : 0
 
@@ -269,7 +265,6 @@ const EnturDashboard = (): JSX.Element | null => {
     }, [
         stopPlacesWithDepartures,
         prevNumberOfStopPlaces,
-        anyBikeRentalStations,
         mapCol,
         settings?.showMap,
         settings?.showWeather,
