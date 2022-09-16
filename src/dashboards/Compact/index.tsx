@@ -219,7 +219,7 @@ const EnturDashboard = (): JSX.Element | null => {
         if (carRentalStations.length > 0) {
             defaultTileOrder = [
                 ...defaultTileOrder,
-                { id: 'rental-car', name: 'Leiebil' },
+                { id: 'rental-car', name: 'Bildeling' },
             ]
         }
         if (hasData && mapCol) {

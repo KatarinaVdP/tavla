@@ -18,9 +18,7 @@ const CarTile = ({ stations }: Props): JSX.Element => {
     )
 
     useEffect(() => {
-        if (settings) {
-            setIconColorType(getIconColorType(settings.theme))
-        }
+        settings && setIconColorType(getIconColorType(settings.theme))
     }, [settings])
 
     return (
