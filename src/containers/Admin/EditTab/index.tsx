@@ -55,7 +55,7 @@ import WeatherPanel from './WeatherPanel'
 
 import './styles.scss'
 import CustomTilePanel from './CustomTilePanel'
-import { getStopPlaces } from '../../../logic/getStopPlaces'
+import { useStopPlaceData } from '../../../logic/useStopPlaceData'
 
 const isMobile = isMobileWeb()
 
@@ -182,13 +182,11 @@ const EditTab = (): JSX.Element => {
     ])
 
     const bikeRentalStations =
-        getStopPlaces(FormFactor.BICYCLE).data?.stations || []
+        useStopPlaceData(FormFactor.BICYCLE).data?.stations || []
 
     const [stopPlaces, setStopPlaces] = useState<
         StopPlaceWithLines[] | undefined
     >(undefined)
-
-    //const bikeRentalStations: Station[] | undefined = data?.stations
 
     const [sortedBikeRentalStations, setSortedBikeRentalStations] = useState<
         Station[]

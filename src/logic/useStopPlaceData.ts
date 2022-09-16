@@ -38,7 +38,7 @@ const GET_STOPPLACES = gql`
     }
 `
 
-export const getStopPlaces = (mobilityType: FormFactor) => {
+export const useStopPlaceData = (mobilityType: FormFactor) => {
     const [settings] = useSettingsContext()
     const { coordinates } = settings || {}
 

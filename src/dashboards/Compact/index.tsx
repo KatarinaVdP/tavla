@@ -47,7 +47,7 @@ import MapTile from './MapTile'
 
 import './styles.scss'
 import MobilityTile from './MobilityTile'
-import { getStopPlaces } from '../../logic/getStopPlaces'
+import { useStopPlaceData } from '../../logic/useStopPlaceData'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -119,8 +119,8 @@ const EnturDashboard = (): JSX.Element | null => {
         boardId ? getFromLocalStorage(boardId + '-tile-order') : undefined,
     )
 
-    const bicycleStopPlaces = getStopPlaces(FormFactor.BICYCLE)
-    const carStopPlaces = getStopPlaces(FormFactor.CAR)
+    const bicycleStopPlaces = useStopPlaceData(FormFactor.BICYCLE)
+    const carStopPlaces = useStopPlaceData(FormFactor.CAR)
 
     const bikeRentalStations: Station[] = bicycleStopPlaces.data?.stations || []
     const carRentalStations: Station[] = carStopPlaces.data?.stations || []
