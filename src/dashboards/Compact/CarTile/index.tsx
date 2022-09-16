@@ -45,16 +45,18 @@ const CarTile = ({ stations }: Props): JSX.Element => {
                     subLabels={[
                         {
                             time:
-                                station.numBikesAvailable === 1
-                                    ? '1 leiebil'
-                                    : `${station.numBikesAvailable} leiebiler`,
+                                `${station.numBikesAvailable}` +
+                                (station.numBikesAvailable === 1
+                                    ? ` leiebil`
+                                    : ` leiebiler`),
                             departureTime: new Date(),
                         },
                         {
                             time:
-                                station.numDocksAvailable === 1
-                                    ? '1 parkering'
-                                    : `${station.numDocksAvailable} parkeringer`,
+                                `${station.numDocksAvailable}` +
+                                (station.numDocksAvailable === 1
+                                    ? ` parkering`
+                                    : ` parkeringer`),
                             departureTime: new Date(),
                         },
                     ]}
