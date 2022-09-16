@@ -1,9 +1,11 @@
+import React from 'react'
+
 import { SmallAlertBox } from '@entur/alert'
 import { Loader } from '@entur/loader'
 import { FormFactor } from '@entur/sdk/lib/mobility/types'
-import React from 'react'
+
 import { useStopPlaceData } from '../../../logic/useStopPlaceData'
-import BikeTile from '../../Compact/BikeTile'
+import BikeTile from '../BikeTile'
 import CarTile from '../CarTile'
 
 const MobilityTile = ({ mobilityType }: Props): JSX.Element => {

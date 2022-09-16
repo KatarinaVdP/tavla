@@ -42,6 +42,7 @@ import {
 import { useStopPlacesWithLines } from '../../../logic/useStopPlacesWithLines'
 
 import useRealtimeVehicleData from '../../../logic/useRealtimeVehicleData'
+import { useStopPlaceData } from '../../../logic/useStopPlaceData'
 
 import StopPlacePanel from './StopPlacePanel'
 import BikePanelSearch from './BikeSearch'
@@ -55,7 +56,6 @@ import WeatherPanel from './WeatherPanel'
 
 import './styles.scss'
 import CustomTilePanel from './CustomTilePanel'
-import { useStopPlaceData } from '../../../logic/useStopPlaceData'
 
 const isMobile = isMobileWeb()
 
@@ -181,8 +181,7 @@ const EditTab = (): JSX.Element => {
         setSettings,
     ])
 
-    const bikeRentalStations =
-        useStopPlaceData(FormFactor.BICYCLE).data?.stations || []
+    const bikeRentalStations = useStopPlaceData(FormFactor.BICYCLE)
 
     const [stopPlaces, setStopPlaces] = useState<
         StopPlaceWithLines[] | undefined
@@ -234,15 +233,17 @@ const EditTab = (): JSX.Element => {
 
     useEffect(() => {
         if (bikeRentalStations) {
-            const sortedStations = bikeRentalStations
-                .filter(isNotNullOrUndefined)
-                .sort((a: Station, b: Station) => {
-                    const aName = getTranslation(a.name)
-                    const bName = getTranslation(b.name)
-                    if (!aName) return 1
-                    if (!bName) return -1
-                    return aName.localeCompare(bName, 'no')
-                })
+            const sortedStations =
+                bikeRentalStations.data?.stations ||
+                []
+                    .filter(isNotNullOrUndefined)
+                    .sort((a: Station, b: Station) => {
+                        const aName = getTranslation(a.name)
+                        const bName = getTranslation(b.name)
+                        if (!aName) return 1
+                        if (!bName) return -1
+                        return aName.localeCompare(bName, 'no')
+                    })
             setSortedBikeRentalStations(sortedStations)
         }
     }, [bikeRentalStations])

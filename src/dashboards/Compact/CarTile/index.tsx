@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { colors } from '@entur/tokens'
 import { CarIcon } from '@entur/icons'

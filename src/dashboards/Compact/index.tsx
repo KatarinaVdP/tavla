@@ -9,6 +9,8 @@ import { Loader } from '@entur/loader'
 
 import { FormFactor, Station } from '@entur/sdk/lib/mobility/types'
 
+import { SmallAlertBox } from '@entur/alert'
+
 import RearrangeModal, { Item } from '../../components/RearrangeModal'
 
 import {
@@ -42,12 +44,13 @@ import WeatherTile from '../../components/WeatherTile'
 import QRTile from '../../components/QRTile'
 import ImageTile from '../../components/ImageTile'
 
+import { useStopPlaceData } from '../../logic/useStopPlaceData'
+
 import DepartureTile from './DepartureTile'
 import MapTile from './MapTile'
 
 import './styles.scss'
 import MobilityTile from './MobilityTile'
-import { useStopPlaceData } from '../../logic/useStopPlaceData'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -272,6 +275,8 @@ const EnturDashboard = (): JSX.Element | null => {
         hasData,
         imageTilesToDisplay,
         qrTilesToDisplay,
+        bikeRentalStations.length,
+        carRentalStations.length,
     ])
 
     const longPress = useLongPress(
@@ -449,11 +454,19 @@ const EnturDashboard = (): JSX.Element | null => {
 
     // TODO: this should be refactored
     if (bicycleStopPlaces.loading || carStopPlaces.loading)
-        return <div>'Loading...'</div>
+        return <Loader>Henter data ...</Loader>
     if (bicycleStopPlaces.error)
-        return <div>`Error! ${bicycleStopPlaces.error.message}`</div>
+        return (
+            <SmallAlertBox variant="error">
+                Error! ${bicycleStopPlaces.error.message}
+            </SmallAlertBox>
+        )
     if (carStopPlaces.error)
-        return <div>`Error! ${carStopPlaces.error.message}`</div>
+        return (
+            <SmallAlertBox variant="error">
+                Error! ${carStopPlaces.error.message}
+            </SmallAlertBox>
+        )
 
     return (
         <DashboardWrapper

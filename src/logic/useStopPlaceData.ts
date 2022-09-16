@@ -1,6 +1,8 @@
-import { gql, useQuery } from "@apollo/client";
-import { FormFactor } from "@entur/sdk/lib/mobility/types";
-import { useSettingsContext } from "../settings";
+import { gql, useQuery } from '@apollo/client'
+
+import { FormFactor } from '@entur/sdk/lib/mobility/types'
+
+import { useSettingsContext } from '../settings'
 
 const GET_STOPPLACES = gql`
     query getStopPlaces(
@@ -54,4 +56,3 @@ export const useStopPlaceData = (mobilityType: FormFactor) => {
     })
     return response
 }
-
