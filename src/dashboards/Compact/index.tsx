@@ -122,10 +122,8 @@ const EnturDashboard = (): JSX.Element | null => {
     const bicycleStopPlaces = getStopPlaces(FormFactor.BICYCLE)
     const carStopPlaces = getStopPlaces(FormFactor.CAR)
 
-    const bikeRentalStations: Station[] | undefined =
-        bicycleStopPlaces.data?.stations
-    const carRentalStations: Station[] | undefined =
-        carStopPlaces.data?.stations
+    const bikeRentalStations: Station[] = bicycleStopPlaces.data?.stations || []
+    const carRentalStations: Station[] = carStopPlaces.data?.stations || []
 
     const scooters = useMobility(FormFactor.SCOOTER)
 
@@ -212,13 +210,13 @@ const EnturDashboard = (): JSX.Element | null => {
                 name: item.name,
             }))
         }
-        if (bikeRentalStations && bikeRentalStations.length > 0) {
+        if (bikeRentalStations.length > 0) {
             defaultTileOrder = [
                 ...defaultTileOrder,
                 { id: 'city-bike', name: 'Bysykkel' },
             ]
         }
-        if (carRentalStations && carRentalStations.length > 0) {
+        if (carRentalStations.length > 0) {
             defaultTileOrder = [
                 ...defaultTileOrder,
                 { id: 'rental-car', name: 'Leiebil' },
@@ -535,7 +533,7 @@ const EnturDashboard = (): JSX.Element | null => {
                                 />
                             </div>
                         ))}
-                        {bikeRentalStations && bikeRentalStations.length > 0 ? (
+                        {bikeRentalStations.length > 0 ? (
                             <div
                                 key="city-bike"
                                 data-grid={getDataGrid(
@@ -557,7 +555,7 @@ const EnturDashboard = (): JSX.Element | null => {
                         ) : (
                             []
                         )}
-                        {carRentalStations && carRentalStations.length > 0 ? (
+                        {carRentalStations.length > 0 ? (
                             <div
                                 key="rental-car"
                                 data-grid={getDataGrid(
