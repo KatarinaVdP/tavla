@@ -44,13 +44,12 @@ import WeatherTile from '../../components/WeatherTile'
 import QRTile from '../../components/QRTile'
 import ImageTile from '../../components/ImageTile'
 
-import { useStopPlaceData } from '../../logic/useStopPlaceData'
-
 import DepartureTile from './DepartureTile'
 import MapTile from './MapTile'
 
 import './styles.scss'
 import MobilityTile from './MobilityTile'
+import { useStopPlaceData } from '../../logic/useStopPlaceData'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -77,6 +76,10 @@ function getDataGrid(
         x: index % maxWidth,
         y: 0,
     }
+    console.log(
+        'get data grid: ',
+        !maxHeigth ? dataGrid : { ...dataGrid, maxH: maxHeigth },
+    )
     return !maxHeigth ? dataGrid : { ...dataGrid, maxH: maxHeigth }
 }
 
@@ -146,6 +149,7 @@ const EnturDashboard = (): JSX.Element | null => {
         : 0
 
     const bikeCol = bikeRentalStations.length > 0 ? 1 : 0
+    const carCol = carRentalStations.length > 0 ? 1 : 0
     const mapCol = settings?.showMap ? 1 : 0
     const weatherCol = settings?.showWeather ? 1 : 0
 
@@ -588,7 +592,10 @@ const EnturDashboard = (): JSX.Element | null => {
                                 id="compact-map-tile"
                                 key="map"
                                 data-grid={getDataGrid(
-                                    numberOfStopPlaces + bikeCol + weatherCol,
+                                    numberOfStopPlaces +
+                                        bikeCol +
+                                        carCol +
+                                        weatherCol,
                                     maxWidthCols,
                                 )}
                             >
@@ -624,6 +631,7 @@ const EnturDashboard = (): JSX.Element | null => {
                                         numberOfStopPlaces +
                                             weatherCol +
                                             bikeCol +
+                                            carCol +
                                             mapCol +
                                             index,
                                         maxWidthCols,
@@ -649,6 +657,7 @@ const EnturDashboard = (): JSX.Element | null => {
                                         numberOfStopPlaces +
                                             weatherCol +
                                             bikeCol +
+                                            carCol +
                                             mapCol +
                                             imageTilesToDisplay.length +
                                             index,

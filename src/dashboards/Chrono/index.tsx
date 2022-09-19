@@ -5,7 +5,7 @@ import { useHistory, useRouteMatch } from 'react-router'
 
 import { useLongPress } from 'use-long-press'
 
-import { FormFactor } from '@entur/sdk/lib/mobility/types'
+import { FormFactor, Station } from '@entur/sdk/lib/mobility/types'
 
 import { Loader } from '@entur/loader'
 
@@ -46,6 +46,8 @@ import MapTile from './MapTile'
 import BikeTile from './BikeTile'
 
 import './styles.scss'
+import { useStopPlaceData } from '../../logic/useStopPlaceData'
+import MobilityTile from './MobilityTile'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -116,7 +118,12 @@ const ChronoDashboard = (): JSX.Element | null => {
         boardId ? getFromLocalStorage(boardId + '-tile-order') : undefined,
     )
 
-    const bikeRentalStations = useBikeRentalStations()
+    const bicycleStopPlaces = useStopPlaceData(FormFactor.BICYCLE)
+    const carStopPlaces = useStopPlaceData(FormFactor.CAR)
+
+    const bikeRentalStations: Station[] = bicycleStopPlaces.data?.stations || []
+    const carRentalStations: Station[] = carStopPlaces.data?.stations || []
+
     const scooters = useMobility(FormFactor.SCOOTER)
 
     const stopPlacesWithDepartures = useStopPlacesWithDepartures()
@@ -135,8 +142,6 @@ const ChronoDashboard = (): JSX.Element | null => {
     const walkInfo = useWalkInfo(walkInfoDestinations)
 
     const numberOfStopPlaces = stopPlacesWithDepartures?.length || 0
-    const anyBikeRentalStations: number | undefined =
-        bikeRentalStations && bikeRentalStations.length
 
     const maxWidthCols = COLS[breakpoint] || 1
 
@@ -149,7 +154,8 @@ const ChronoDashboard = (): JSX.Element | null => {
             stopPlacesWithDepartures?.length,
     )
 
-    const bikeCol = anyBikeRentalStations ? 1 : 0
+    const bikeCol = bikeRentalStations.length > 0 ? 1 : 0
+    const carCol = carRentalStations.length > 0 ? 1 : 0
     const mapCol = settings?.showMap ? 1 : 0
     const weatherCol = settings?.showWeather ? 1 : 0
 
@@ -201,10 +207,16 @@ const ChronoDashboard = (): JSX.Element | null => {
                 name: item.name,
             }))
         }
-        if (anyBikeRentalStations) {
+        if (bikeRentalStations.length > 0) {
             defaultTileOrder = [
                 ...defaultTileOrder,
                 { id: 'city-bike', name: 'Bysykkel' },
+            ]
+        }
+        if (carRentalStations.length > 0) {
+            defaultTileOrder = [
+                ...defaultTileOrder,
+                { id: 'rental-car', name: 'Bildeling' },
             ]
         }
         if (hasData && mapCol) {
@@ -219,6 +231,7 @@ const ChronoDashboard = (): JSX.Element | null => {
                 ...defaultTileOrder,
             ]
         }
+        console.log('default tile order', defaultTileOrder)
 
         if (imageTilesToDisplay)
             defaultTileOrder = [
@@ -255,7 +268,6 @@ const ChronoDashboard = (): JSX.Element | null => {
     }, [
         stopPlacesWithDepartures,
         prevNumberOfStopPlaces,
-        anyBikeRentalStations,
         mapCol,
         hasData,
         settings?.showMap,
@@ -358,7 +370,7 @@ const ChronoDashboard = (): JSX.Element | null => {
                                     )
                                 } else if (item.id == 'city-bike') {
                                     return bikeRentalStations &&
-                                        anyBikeRentalStations ? (
+                                        bikeRentalStations.length > 0 ? (
                                         <div key={item.id}>
                                             <BikeTile
                                                 stations={bikeRentalStations}
@@ -507,7 +519,7 @@ const ChronoDashboard = (): JSX.Element | null => {
                                 />
                             </div>
                         ))}
-                        {bikeRentalStations && anyBikeRentalStations ? (
+                        {bikeRentalStations.length > 0 ? (
                             <div
                                 key="city-bike"
                                 data-grid={getDataGrid(
@@ -522,7 +534,29 @@ const ChronoDashboard = (): JSX.Element | null => {
                                         variant="light"
                                     />
                                 ) : null}
-                                <BikeTile stations={bikeRentalStations} />
+                                <MobilityTile
+                                    mobilityType={FormFactor.BICYCLE}
+                                />
+                            </div>
+                        ) : (
+                            []
+                        )}
+                        {carRentalStations.length > 0 ? (
+                            <div
+                                key="rental-car"
+                                data-grid={getDataGrid(
+                                    numberOfStopPlaces + weatherCol,
+                                    maxWidthCols,
+                                )}
+                            >
+                                {!isMobile ? (
+                                    <ResizeHandle
+                                        size="32"
+                                        className="resizeHandle"
+                                        variant="light"
+                                    />
+                                ) : null}
+                                <MobilityTile mobilityType={FormFactor.CAR} />
                             </div>
                         ) : (
                             []
@@ -532,7 +566,10 @@ const ChronoDashboard = (): JSX.Element | null => {
                                 id="chrono-map-tile"
                                 key="map"
                                 data-grid={getDataGrid(
-                                    numberOfStopPlaces + bikeCol + weatherCol,
+                                    numberOfStopPlaces +
+                                        bikeCol +
+                                        carCol +
+                                        weatherCol,
                                     maxWidthCols,
                                 )}
                             >
@@ -567,6 +604,7 @@ const ChronoDashboard = (): JSX.Element | null => {
                                         numberOfStopPlaces +
                                             weatherCol +
                                             bikeCol +
+                                            carCol +
                                             mapCol +
                                             index,
                                         maxWidthCols,
@@ -592,6 +630,7 @@ const ChronoDashboard = (): JSX.Element | null => {
                                         numberOfStopPlaces +
                                             weatherCol +
                                             bikeCol +
+                                            carCol +
                                             mapCol +
                                             numberOfCustomImages +
                                             index,
