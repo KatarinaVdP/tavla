@@ -33,11 +33,7 @@ import {
 
 import { DEFAULT_DISTANCE, DEFAULT_ZOOM } from '../../../constants'
 import { Line, StopPlaceWithLines } from '../../../types'
-import {
-    useNearestPlaces,
-    useMobility,
-    useBikeRentalStations,
-} from '../../../logic'
+import { useNearestPlaces, useMobility } from '../../../logic'
 import { getStopPlacesWithLines } from '../../../logic/getStopPlacesWithLines'
 import {
     saveToLocalStorage,
@@ -46,6 +42,7 @@ import {
 import { useStopPlacesWithLines } from '../../../logic/useStopPlacesWithLines'
 
 import useRealtimeVehicleData from '../../../logic/useRealtimeVehicleData'
+import { useStopPlaceData } from '../../../logic/useStopPlaceData'
 
 import StopPlacePanel from './StopPlacePanel'
 import BikePanelSearch from './BikeSearch'
@@ -184,11 +181,12 @@ const EditTab = (): JSX.Element => {
         setSettings,
     ])
 
+    const bikeRentalStations = useStopPlaceData(FormFactor.BICYCLE)
+
     const [stopPlaces, setStopPlaces] = useState<
         StopPlaceWithLines[] | undefined
     >(undefined)
-    const bikeRentalStations: Station[] | undefined =
-        useBikeRentalStations(false)
+
     const [sortedBikeRentalStations, setSortedBikeRentalStations] = useState<
         Station[]
     >([])
@@ -235,15 +233,17 @@ const EditTab = (): JSX.Element => {
 
     useEffect(() => {
         if (bikeRentalStations) {
-            const sortedStations = bikeRentalStations
-                .filter(isNotNullOrUndefined)
-                .sort((a: Station, b: Station) => {
-                    const aName = getTranslation(a.name)
-                    const bName = getTranslation(b.name)
-                    if (!aName) return 1
-                    if (!bName) return -1
-                    return aName.localeCompare(bName, 'no')
-                })
+            const sortedStations =
+                bikeRentalStations.data?.stations ||
+                []
+                    .filter(isNotNullOrUndefined)
+                    .sort((a: Station, b: Station) => {
+                        const aName = getTranslation(a.name)
+                        const bName = getTranslation(b.name)
+                        if (!aName) return 1
+                        if (!bName) return -1
+                        return aName.localeCompare(bName, 'no')
+                    })
             setSortedBikeRentalStations(sortedStations)
         }
     }, [bikeRentalStations])

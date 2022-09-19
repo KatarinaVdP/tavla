@@ -7,12 +7,13 @@ import { useLongPress } from 'use-long-press'
 
 import { Loader } from '@entur/loader'
 
-import { FormFactor } from '@entur/sdk/lib/mobility/types'
+import { FormFactor, Station } from '@entur/sdk/lib/mobility/types'
+
+import { SmallAlertBox } from '@entur/alert'
 
 import RearrangeModal, { Item } from '../../components/RearrangeModal'
 
 import {
-    useBikeRentalStations,
     useStopPlacesWithDepartures,
     useMobility,
     useWalkInfo,
@@ -43,11 +44,13 @@ import WeatherTile from '../../components/WeatherTile'
 import QRTile from '../../components/QRTile'
 import ImageTile from '../../components/ImageTile'
 
+import { useStopPlaceData } from '../../logic/useStopPlaceData'
+
 import DepartureTile from './DepartureTile'
-import BikeTile from './BikeTile'
 import MapTile from './MapTile'
 
 import './styles.scss'
+import MobilityTile from './MobilityTile'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive)
 
@@ -119,7 +122,12 @@ const EnturDashboard = (): JSX.Element | null => {
         boardId ? getFromLocalStorage(boardId + '-tile-order') : undefined,
     )
 
-    const bikeRentalStations = useBikeRentalStations()
+    const bicycleStopPlaces = useStopPlaceData(FormFactor.BICYCLE)
+    const carStopPlaces = useStopPlaceData(FormFactor.CAR)
+
+    const bikeRentalStations: Station[] = bicycleStopPlaces.data?.stations || []
+    const carRentalStations: Station[] = carStopPlaces.data?.stations || []
+
     const scooters = useMobility(FormFactor.SCOOTER)
 
     const stopPlacesWithDepartures = useStopPlacesWithDepartures()
@@ -136,10 +144,8 @@ const EnturDashboard = (): JSX.Element | null => {
     const numberOfStopPlaces = stopPlacesWithDepartures
         ? stopPlacesWithDepartures.length
         : 0
-    const anyBikeRentalStations: number | undefined =
-        bikeRentalStations && bikeRentalStations.length
 
-    const bikeCol = anyBikeRentalStations ? 1 : 0
+    const bikeCol = bikeRentalStations.length > 0 ? 1 : 0
     const mapCol = settings?.showMap ? 1 : 0
     const weatherCol = settings?.showWeather ? 1 : 0
 
@@ -203,10 +209,16 @@ const EnturDashboard = (): JSX.Element | null => {
                 name: item.name,
             }))
         }
-        if (anyBikeRentalStations) {
+        if (bikeRentalStations.length > 0) {
             defaultTileOrder = [
                 ...defaultTileOrder,
                 { id: 'city-bike', name: 'Bysykkel' },
+            ]
+        }
+        if (carRentalStations.length > 0) {
+            defaultTileOrder = [
+                ...defaultTileOrder,
+                { id: 'rental-car', name: 'Bildeling' },
             ]
         }
         if (hasData && mapCol) {
@@ -256,7 +268,6 @@ const EnturDashboard = (): JSX.Element | null => {
     }, [
         stopPlacesWithDepartures,
         prevNumberOfStopPlaces,
-        anyBikeRentalStations,
         mapCol,
         settings?.showMap,
         settings?.showWeather,
@@ -264,6 +275,8 @@ const EnturDashboard = (): JSX.Element | null => {
         hasData,
         imageTilesToDisplay,
         qrTilesToDisplay,
+        bikeRentalStations.length,
+        carRentalStations.length,
     ])
 
     const longPress = useLongPress(
@@ -296,7 +309,6 @@ const EnturDashboard = (): JSX.Element | null => {
             clearTimeout(isCancelled.current)
         }
     }
-
     if (window.innerWidth < BREAKPOINTS.md) {
         if (!tileOrder) return null
 
@@ -352,11 +364,22 @@ const EnturDashboard = (): JSX.Element | null => {
                                         []
                                     )
                                 } else if (item.id == 'city-bike') {
-                                    return bikeRentalStations &&
-                                        anyBikeRentalStations ? (
+                                    return bikeRentalStations ? (
                                         <div key={item.id}>
-                                            <BikeTile
-                                                stations={bikeRentalStations}
+                                            <MobilityTile
+                                                mobilityType={
+                                                    FormFactor.BICYCLE
+                                                }
+                                            />
+                                        </div>
+                                    ) : (
+                                        []
+                                    )
+                                } else if (item.id == 'rental-car') {
+                                    return carRentalStations ? (
+                                        <div key={item.id}>
+                                            <MobilityTile
+                                                mobilityType={FormFactor.CAR}
                                             />
                                         </div>
                                     ) : (
@@ -428,6 +451,23 @@ const EnturDashboard = (): JSX.Element | null => {
             </DashboardWrapper>
         )
     }
+
+    // TODO: this should be refactored
+    if (bicycleStopPlaces.loading || carStopPlaces.loading)
+        return <Loader>Henter data ...</Loader>
+    if (bicycleStopPlaces.error)
+        return (
+            <SmallAlertBox variant="error">
+                Error! ${bicycleStopPlaces.error.message}
+            </SmallAlertBox>
+        )
+    if (carStopPlaces.error)
+        return (
+            <SmallAlertBox variant="error">
+                Error! ${carStopPlaces.error.message}
+            </SmallAlertBox>
+        )
+
     return (
         <DashboardWrapper
             className="compact"
@@ -501,7 +541,7 @@ const EnturDashboard = (): JSX.Element | null => {
                                 />
                             </div>
                         ))}
-                        {bikeRentalStations && anyBikeRentalStations ? (
+                        {bikeRentalStations.length > 0 ? (
                             <div
                                 key="city-bike"
                                 data-grid={getDataGrid(
@@ -516,7 +556,29 @@ const EnturDashboard = (): JSX.Element | null => {
                                         variant="light"
                                     />
                                 ) : null}
-                                <BikeTile stations={bikeRentalStations} />
+                                <MobilityTile
+                                    mobilityType={FormFactor.BICYCLE}
+                                />
+                            </div>
+                        ) : (
+                            []
+                        )}
+                        {carRentalStations.length > 0 ? (
+                            <div
+                                key="rental-car"
+                                data-grid={getDataGrid(
+                                    numberOfStopPlaces + weatherCol,
+                                    maxWidthCols,
+                                )}
+                            >
+                                {!isMobile ? (
+                                    <ResizeHandle
+                                        size="32"
+                                        className="resizeHandle"
+                                        variant="light"
+                                    />
+                                ) : null}
+                                <MobilityTile mobilityType={FormFactor.CAR} />
                             </div>
                         ) : (
                             []
