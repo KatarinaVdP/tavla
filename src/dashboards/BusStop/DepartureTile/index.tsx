@@ -54,7 +54,7 @@ function getColSizes(
             !hideTracks && !hideSituations
                 ? getColSize('24%', '43%')
                 : !hideTracks || !hideSituations
-                ? getColSize('42', '42%')
+                ? getColSize('42%', '42%')
                 : getColSize('60%', '60%'),
         departureCol: getColSize('18%', '22%'),
         trackCol: !hideTracks ? getColSize('18%', '13%') : undefined,

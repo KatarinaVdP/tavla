@@ -43,7 +43,8 @@
 
         &__situation {
             font-size: 1.125rem;
-            height: 1.25rem;
+            min-height: 1.25rem;
+            word-break: break-word;
         }
     }
     @media (max-width: 1000px) {

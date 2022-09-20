@@ -63,9 +63,7 @@ export function TileRows({
                                             situationMessage={data?.situation}
                                         />
                                     ) : (
-                                        <SubLabelIcon
-                                            subLabel={createTileSubLabel(data)}
-                                        />
+                                        <SubLabelIcon subLabel={subLabel} />
                                     )}
                                 </DataCell>
                             ) : null}
